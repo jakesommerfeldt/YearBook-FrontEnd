@@ -4,279 +4,330 @@ import axios from 'axios';
 import './AccountManagement.css';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
-  // New fields
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [major1ID, setMajor1ID] = useState('');
+  const [major2ID, setMajor2ID] = useState('');
+  const [minor1ID, setMinor1ID] = useState('');
+  const [minor2ID, setMinor2ID] = useState('');
+  const [minor3ID, setMinor3ID] = useState('');
   const [quote, setQuote] = useState('');
-  const [graduationYear, setGraduationYear] = useState('');
-  const [snapchat, setSnapchat] = useState('');
-  const [bereal, setBeReal] = useState('');
-  const [twitter, setTwitter] = useState('');
-  const [tiktok, setTikTok] = useState('');
-  const [facebook, setFacebook] = useState('');
+  const [finishYear, setFinishYear] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
   
   const [selectedMajors, setSelectedMajors] = useState([]);
   const majors = [
-    'Accounting', 'Actuarial Science', 'Animal Behavior', 'Applied Physics', 'Applied Physics and Engineering Dual Degree', 'Art', 'Athletic Training', 'Aviation Science and Drone Technologies',
-    'Biochemistry', 'Biology', 'Business Administration', 'Business Analytics', 'Business Economics', 'Chemistry', 'Communication', 'Computer Science', 'Computer Science and Information Technology',
-    'Criminal Justice', 'Educational Studies', 'Elementary Education', 'Engineering and Applied Physics Dual Degree', 'English and Writing', 'Environmental Science', 'Exercise Science', 'Finance',
-    'Global Studies', 'Graphic Design', 'Health Sciences', 'Healthcare Administration', 'History', 'Information Technology', 'Management and Leadership', 'Marine Sciences', 'Marketing', 'Mathematics',
-    'Music', 'Music Education', 'Music Therapy', 'Musical Theatre', 'Neurodiagnostic Technology', 'Nursing BSN', 'Occupational Therapy MOT', 'Philosophy', 'Photography', 'Physical and Health Education',
-    'Physical Therapy Direct Admission Doctor of Physical Therapy', 'Political Science', 'Politics and Economics', 'PreProfessional Health Science Programs', 'PreProfessional Program in Law', 'Psychology',
-    'Public Health', 'Religious Studies', 'Secondary Education', 'Sociology', 'Spanish', 'Sports Administration', 'Theatre', 'UndecidedExploring', 'Video Game Design'
+    { id: 1, name: "Accounting" },
+    { id: 2, name: "Actuarial Science" },
+    { id: 3, name: "Animal Behavior" },
+    { id: 4, name: "Applied Physics" },
+    { id: 5, name: "Applied Physics and Engineering Dual Degree" },
+    { id: 6, name: "Art" },
+    { id: 7, name: "Athletic Training" },
+    { id: 8, name: "Aviation Science and Drone Technologies" },
+    { id: 9, name: "Biochemistry" },
+    { id: 10, name: "Biology" },
+    { id: 11, name: "Business Administration" },
+    { id: 12, name: "Business Analytics" },
+    { id: 13, name: "Business Economics" },
+    { id: 14, name: "Chemistry" },
+    { id: 15, name: "Communication" },
+    { id: 16, name: "Computer Science" },
+    { id: 17, name: "Computer Science and Information Technology" },
+    { id: 18, name: "Criminal Justice" },
+    { id: 19, name: "Educational Studies" },
+    { id: 20, name: "Elementary Education" },
+    { id: 21, name: "English and Writing" },
+    { id: 22, name: "Engineering and Applied Physics Dual Degree" },
+    { id: 23, name: "Environmental Science" },
+    { id: 24, name: "Exercise Science" },
+    { id: 25, name: "Finance" },
+    { id: 26, name: "Global Studies" },
+    { id: 27, name: "Graphic Design" },
+    { id: 28, name: "Healthcare Administration" },
+    { id: 29, name: "Health Sciences" },
+    { id: 30, name: "History" },
+    { id: 31, name: "Information Technology" },
+    { id: 32, name: "Management and Leadership" },
+    { id: 33, name: "Marine Sciences" },
+    { id: 34, name: "Marketing" },
+    { id: 35, name: "Mathematics" },
+    { id: 36, name: "Music" },
+    { id: 37, name: "Music Education" },
+    { id: 38, name: "Musical Theatre" },
+    { id: 39, name: "Music Therapy" },
+    { id: 40, name: "Neurodiagnostic Technology" },
+    { id: 41, name: "Nursing (BSN)" },
+    { id: 42, name: "Occupational Therapy (MOT)" },
+    { id: 43, name: "Philosophy" },
+    { id: 44, name: "Politics and Economics" },
+    { id: 45, name: "Photography" },
+    { id: 46, name: "Physical and Health Education" },
+    { id: 47, name: "Physical Therapy (Direct Admission – Doctor of Physical Therapy)" },
+    { id: 48, name: "Political Science" },
+    { id: 49, name: "Pre-Professional Program in Law" },
+    { id: 50, name: "Pre-Professional Health Science Programs" },
+    { id: 51, name: "Psychology" },
+    { id: 52, name: "Public Health" },
+    { id: 53, name: "Religious Studies" },
+    { id: 54, name: "Secondary Education" },
+    { id: 55, name: "Sociology" },
+    { id: 56, name: "Spanish" },
+    { id: 57, name: "Sports Administration" },
+    { id: 58, name: "Theatre" },
+    { id: 59, name: "Undecided/Exploring" },
+    { id: 60, name: "Video Game Design" },
   ];
 
   const [selectedMinors, setSelectedMinors] = useState([]);
   const minors = [
-    'Accounting Minor', 'Actuarial Science Minor', 'Animal Behavior Minor', 'Art Minor', 'Artificial Intelligence Minor', 'Arts Management Minor', 'Aviation Science and Unmanned Aircraft Systems UAS Minor',
-    'Biochemistry Minor', 'Biology Minor', 'Business Analytics Minor', 'Chemistry Minor', 'Coaching Minor', 'Computer Science Minor', 'Creative Writing Minor',
-    'Criminal Justice Minor', 'Earth Science Minor', 'Economics Minor', 'Educational Studies Minor', 'Elementary Education Mathematics Minor', 'English Minor',
-    'Environmental Studies Minor', 'Film and Television Minor', 'Finance Minor', 'Global Studies Minor', 'Graphic Design Minor', 'Health and Human Experience Minor',
-    'Healthcare Administration Minor', 'History Minor', 'Information Technology Minor', 'Management and Leadership Minor', 'Marketing Minor', 'Mathematics Minor',
-    'Elementary Education', 'Medieval and Renaissance Studies Minor', 'Music Minor', 'Musical Theatre Minor', 'Philosophy Minor', 'Photography Minor', 'Physics Minor', 'Political Science Minor',
-    'Professional Writing Minor', 'Psychology Minor', 'Public Health Minor', 'Religious Studies Minor', 'Social Media Minor', 'Sociology Minor', 'Sociology of Health Minor',
-    'Sociology of Sustainability Minor', 'Spanish Minor', 'Theatre Minor', 'Video Game Studies Minor', 'Women and Gender Studies Minor'
+    { id: 1, name: "Accounting Minor" },
+    { id: 2, name: "Actuarial Science Minor" },
+    { id: 3, name: "Animal Behavior Minor" },
+    { id: 4, name: "Art Minor" },
+    { id: 5, name: "Artificial Intelligence Minor" },
+    { id: 6, name: "Arts Management Minor" },
+    { id: 7, name: "Aviation Science and Unmanned Aircraft Systems (UAS) Minor" },
+    { id: 8, name: "Biochemistry Minor" },
+    { id: 9, name: "Biology Minor" },
+    { id: 10, name: "Business Analytics Minor" },
+    { id: 11, name: "Chemistry Minor" },
+    { id: 12, name: "Coaching Minor" },
+    { id: 13, name: "Computer Science Minor" },
+    { id: 14, name: "Creative Writing Minor" },
+    { id: 15, name: "Criminal Justice Minor" },
+    { id: 16, name: "Earth Science Minor" },
+    { id: 17, name: "Economics Minor" },
+    { id: 18, name: "Educational Studies Minor" },
+    { id: 19, name: "Elementary Education Mathematics Minor" },
+    { id: 20, name: "English Minor" },
+    { id: 21, name: "Environmental Studies Minor" },
+    { id: 22, name: "Film and Television Minor" },
+    { id: 23, name: "Finance Minor" },
+    { id: 24, name: "Global Studies Minor" },
+    { id: 25, name: "Graphic Design Minor" },
+    { id: 26, name: "Health and Human Experience Minor" },
+    { id: 27, name: "Healthcare Administration Minor" },
+    { id: 28, name: "History Minor" },
+    { id: 29, name: "Information Technology Minor" },
+    { id: 30, name: "Management and Leadership Minor" },
+    { id: 31, name: "Marketing Minor" },
+    { id: 32, name: "Mathematics Minor" },
+    { id: 33, name: "Mathematics Minor, Elementary Education" },
+    { id: 34, name: "Medieval and Renaissance Studies Minor" },
+    { id: 35, name: "Music Minor" },
+    { id: 36, name: "Musical Theatre Minor" },
+    { id: 37, name: "Philosophy Minor" },
+    { id: 38, name: "Photography Minor" },
+    { id: 39, name: "Physics Minor" },
+    { id: 40, name: "Political Science Minor" },
+    { id: 41, name: "Professional Writing Minor" },
+    { id: 42, name: "Psychology Minor" },
+    { id: 43, name: "Public Health Minor" },
+    { id: 44, name: "Religious Studies Minor" },
+    { id: 45, name: "Sociology Minor" },
+    { id: 46, name: "Sociology of Health Minor" },
+    { id: 47, name: "Social Media Minor" },
+    { id: 48, name: "Sociology of Sustainability Minor" },
+    { id: 49, name: "Spanish Minor" },
+    { id: 50, name: "Theatre Minor" },
+    { id: 51, name: "Video Game Studies Minor" },
+    { id: 52, name: "Women and Gender Studies Minor" },
   ];
   
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(''); // Reset error message
-  
+
     // Validation
-    if (password !== confirmPassword) {
-      setError("Passwords don't match.");
+    if (!major1ID) {
+      setError('You must select a primary major.');
       return;
     }
-    if (selectedMajors.length < 1) {
-      setError('You must select at least one major.');
-      return;
-    }
-    if (selectedMajors.length > 2) {
-      setError('You can select up to two majors.');
-      return;
-    }
-    if (selectedMinors.length > 3) {
-      setError('You can select up to three minors.');
-      return;
-    }
-  
+
     try {
-      // Prepare FormData payload
       const formData = new FormData();
-      formData.append('username', username);
       formData.append('email', email);
+      formData.append('name', name);
       formData.append('password', password);
-      formData.append('firstName', firstName);
-      formData.append('lastName', lastName);
+      formData.append('accessLevel', 1);
+      formData.append('major1ID', major1ID);
+      if (major2ID) formData.append('major2ID', major2ID);
+      if (minor1ID) formData.append('minor1ID', minor1ID);
+      if (minor2ID) formData.append('minor2ID', minor2ID);
+      if (minor3ID) formData.append('minor3ID', minor3ID);
       formData.append('quote', quote);
-      formData.append('graduationYear', graduationYear);
-      selectedMajors.forEach((major, index) =>
-        formData.append(`majors[${index}]`, major)
-      );
-      selectedMinors.forEach((minor, index) =>
-        formData.append(`minors[${index}]`, minor)
-      );
-      formData.append('snapchat', snapchat);
-      formData.append('bereal', bereal);
-      formData.append('twitter', twitter);
-      formData.append('tiktok', tiktok);
-      formData.append('facebook', facebook);
-  
-      // Make POST request with form-data
+      formData.append('finishYear', finishYear);
+      if (profileImage) formData.append('profileImage', profileImage);
+
       const response = await axios.post('http://localhost:3000/api/users', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-  
-      const data = response.data;
-  
+
       // Store user info or token if needed
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-  
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
       // Redirect or handle successful registration
-      //navigate('/welcome'); // Replace with your desired path
+      navigate('/home');
     } catch (error) {
-      setError(
-        error.response?.data?.message || 'Registration failed. Please try again.'
-      );
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
-  
+
   return (
     <div className="login-page">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+    <h2>Register</h2>
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Carroll Email"
+          placeholder="Email"
+          className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
-        {/* Password input with toggle visibility */}
-        <div className="password-container">
-          <input
-            type={passwordVisible ? 'text' : 'password'} // Toggle between text and password
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="button"
-            className="view-password-btn"
-            onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
-          >
-            {passwordVisible ? 'Hide' : 'Show'}
-          </button>
-        </div>
-
-        {/* Confirm Password input with toggle visibility */}
-        <div className="password-container">
-          <input
-            type={confirmPasswordVisible ? 'text' : 'password'} // Toggle between text and password
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <button
-            type="button"
-            className="view-password-btn"
-            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)} // Toggle visibility
-          >
-            {confirmPasswordVisible ? 'Hide' : 'Show'}
-          </button>
-        </div>
-
-        <label>Majors (Select 1-2):</label>
-        <select
-          multiple
-          value={selectedMajors}
-          onChange={(e) =>
-            setSelectedMajors(
-              Array.from(e.target.selectedOptions, (option) => option.value)
-            )
-          }
-        >
-          {majors.map((major, index) => (
-            <option key={index} value={major}>
-              {major}
-            </option>
-          ))}
-        </select>
-
-        <label>Minors (Select up to 3):</label>
-        <select
-          multiple
-          value={selectedMinors}
-          onChange={(e) =>
-            setSelectedMinors(
-              Array.from(e.target.selectedOptions, (option) => option.value)
-            )
-          }
-        >
-          {minors.map((minor, index) => (
-            <option key={index} value={minor}>
-              {minor}
-            </option>
-          ))}
-        </select>
-
-        <div className="password-container">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-          <input
+      </div>
+      <div className="form-group">
+        <input
           type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Name"
+          className="form-control"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
-          />
-        </div>
-        
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="password"
+          placeholder="Password"
+          className="form-control"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="major1">Major 1:</label>
+        <select
+          id="major1"
+          className="form-control"
+          value={major1ID}
+          onChange={(e) => setMajor1ID(e.target.value)}
+          required
+        >
+          <option value="">Select Major</option>
+          {majors.map((major) => (
+            <option key={major.id} value={major.id}>
+              {major.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="major2">Major 2 (Optional):</label>
+        <select
+          id="major2"
+          className="form-control"
+          value={major2ID}
+          onChange={(e) => setMajor2ID(e.target.value)}
+        >
+          <option value="">Select Major</option>
+          {majors.map((major) => (
+            <option key={major.id} value={major.id}>
+              {major.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="minor1">Minor 1:</label>
+        <select
+          id="minor1"
+          className="form-control"
+          value={minor1ID}
+          onChange={(e) => setMinor1ID(e.target.value)}
+        >
+          <option value="">Select Minor</option>
+          {minors.map((minor) => (
+            <option key={minor.id} value={minor.id}>
+              {minor.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="minor2">Minor 2:</label>
+        <select
+          id="minor2"
+          className="form-control"
+          value={minor2ID}
+          onChange={(e) => setMinor2ID(e.target.value)}
+        >
+          <option value="">Select Minor</option>
+          {minors.map((minor) => (
+            <option key={minor.id} value={minor.id}>
+              {minor.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="minor3">Minor 3:</label>
+        <select
+          id="minor3"
+          className="form-control"
+          value={minor3ID}
+          onChange={(e) => setMinor3ID(e.target.value)}
+        >
+          <option value="">Select Minor</option>
+          {minors.map((minor) => (
+            <option key={minor.id} value={minor.id}>
+              {minor.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <input
+          type="number"
+          placeholder="Finish Year"
+          className="form-control"
+          value={finishYear}
+          onChange={(e) => setFinishYear(e.target.value)}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="file"
+          className="form-control"
+          onChange={(e) => setProfileImage(e.target.files[0])}
+          required
+        />
+      </div>
+      <div className="form-group">
         <input
           type="text"
           placeholder="Quote"
+          className="form-control"
           value={quote}
           onChange={(e) => setQuote(e.target.value)}
         />
-        <input
-          type="number"
-          placeholder="Graduation Year"
-          value={graduationYear}
-          onChange={(e) => setGraduationYear(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Snapchat (optional)"
-          value={snapchat}
-          onChange={(e) => setSnapchat(e.target.value)}
-        />
-
-      <div className="password-container">
-        <input
-          type="text"
-          placeholder="BeReal (optional)"
-          value={bereal}
-          onChange={(e) => setBeReal(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Twitter (optional)"
-          value={twitter}
-          onChange={(e) => setTwitter(e.target.value)}
-        />
       </div>
-
-      <div className="password-container">
-        <input
-          type="text"
-          placeholder="TikTok (optional)"
-          value={tiktok}
-          onChange={(e) => setTikTok(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Facebook (optional)"
-          value={facebook}
-          onChange={(e) => setFacebook(e.target.value)}
-        />
-      </div>
-
-        <button type="submit">Register</button>
-        {error && <p className="error-message">{error}</p>}
-
-      </form>
-    </div>
+      <button type="submit" className="btn btn-primary">
+        Register
+      </button>
+      {error && <p className="error-message">{error}</p>}
+    </form>
+  </div>
   );
-
 };
 
 export default Register;

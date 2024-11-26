@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AccountManagement.css';
 
-const ForgotPassword = () => {
+const VerifyPasswordReset = () => {
   const [email, setEmail] = useState('');
-  const [oldPassword, setOldPassword] = useState('');
+  const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -16,51 +17,64 @@ const ForgotPassword = () => {
     setSuccessMessage('');
 
     try {
-      // Make POST request to forgot password API
-      const response = await axios.post('http://localhost:3000/api/forgot-password', {
+      // Make POST request to verify password reset API
+      const response = await axios.post('http://localhost:3000/api/users/verify-password-reset', {
         email,
-        oldPassword,
+        code,
+        newPassword,
       });
 
       const data = response.data;
 
       // Show success message
-      setSuccessMessage(data.message);
+      setSuccessMessage(data.message || 'Password reset successful!');
 
-      // Redirect to Reset Password page
+      // Redirect to login page
       setTimeout(() => {
-        navigate('/reset-password'); // Replace with your desired path
+        navigate('/login'); // Replace with your desired path
       }, 2000); // Redirect after 2 seconds
     } catch (error) {
       setError(
-        error.response?.data?.message || 'Failed to validate old password. Please try again.'
+        error.response?.data?.message || 'Failed to reset password. Please try again.'
       );
     }
   };
 
   return (
     <div className="login-page">
-      <h2>Forgot Password</h2>
+      <h2>Verify Password Reset</h2>
       <form onSubmit={handleSubmit}>
         {/* Email input */}
         <input
           type="email"
           placeholder="Enter your email"
+          className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
 
-        {/* Old Password input */}
+        {/* Reset Code input */}
         <input
-          type="password"
-          placeholder="Enter your old password"
-          value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
+          type="text"
+          placeholder="Enter reset code"
+          className="form-control"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
           required
         />
 
-        <button type="submit">Submit</button>
+        {/* New Password input */}
+        <input
+          type="password"
+          placeholder="Enter new password"
+          className="form-control"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit" className="btn btn-primary">Submit</button>
 
         {/* Display error or success messages */}
         {error && <p className="error-message">{error}</p>}
@@ -70,4 +84,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default VerifyPasswordReset;

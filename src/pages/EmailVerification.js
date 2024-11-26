@@ -1,43 +1,44 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For navigation after login
+import { useNavigate } from 'react-router-dom';
 import './AccountManagement.css';
 
 const EmailVerification = () => {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState(''); // To display error messages
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const [userId, setUserId] = useState(''); // Field for userId
+  const [code, setCode] = useState(''); // Field for verification code
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Reset error message
     setError('');
+    setSuccessMessage('');
 
-    // Verification logic
     try {
-      const response = await fetch('', {
+      // Send POST request to the email verification API
+      const response = await fetch('http://localhost:3000/api/users/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ userId, code }),
       });
 
       if (!response.ok) {
-        throw new Error('Verification failed. Ensure verification code is entered correctly, or there is an issue with the server.');
+        throw new Error('Verification failed. Please ensure the code is correct and try again.');
       }
 
       const data = await response.json();
 
-      // Assuming the response includes a token and user info
-      // You might want to store the token in localStorage or context
-      localStorage.setItem('token', data.token); // Store token for authentication
-      localStorage.setItem('user', JSON.stringify(data.user)); // Optionally store user info
+      // Show success message
+      setSuccessMessage('Email successfully verified! Redirecting...');
 
-      // Navigate to the dashboard or home page after successful login
-      navigate('/home'); // Change this to your desired route
+      // Redirect after success
+      setTimeout(() => {
+        navigate('/home'); // Change this to your desired route
+      }, 2000);
     } catch (error) {
-      setError(error.message); // Display error message
+      setError(error.message);
     }
   };
 
@@ -45,15 +46,31 @@ const EmailVerification = () => {
     <div className="login-page">
       <h2>Email Verification</h2>
       <form onSubmit={handleSubmit}>
+        {/* User ID Input */}
         <input
-          type="code"
+          type="text"
+          placeholder="User ID"
+          className="form-control"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          required
+        />
+
+        {/* Verification Code Input */}
+        <input
+          type="text"
           placeholder="Verification Code"
+          className="form-control"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           required
         />
-        <button type="submit">Verify</button>
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+
+        <button type="submit" className="btn btn-primary">Verify</button>
+
+        {/* Error and Success Messages */}
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
       </form>
     </div>
   );

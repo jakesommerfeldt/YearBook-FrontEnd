@@ -26,7 +26,7 @@ export default App;*/
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Register.js';
+import Login from './pages/EmailVerification.js';
 
 const App = () => {
   return (

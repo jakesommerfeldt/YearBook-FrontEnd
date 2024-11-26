@@ -4,7 +4,7 @@ import axios from 'axios';
 import './AccountManagement.css';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState(''); // Changed from username to email
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
@@ -16,8 +16,8 @@ const Login = () => {
 
     try {
       // Make POST request to login API
-      const response = await axios.post('http://localhost:3000/api/login', {
-        username,
+      const response = await axios.post('http://localhost:3000/api/users/login', {
+        email,
         password,
       });
 
@@ -40,11 +40,12 @@ const Login = () => {
     <div className="login-page">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
+        {/* Email input */}
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 

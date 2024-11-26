@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AccountManagement.css';
 
-const ResetPassword = () => {
+const RequestPasswordReset = () => {
   const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -16,63 +14,42 @@ const ResetPassword = () => {
     setError('');
     setSuccessMessage('');
 
-    if (newPassword !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
-
     try {
-      // Send request to update password
-      const response = await axios.post('http://localhost:3000/api/reset-password', {
+      // Send request for password reset
+      const response = await axios.post('http://localhost:3000/api/users/request-password-reset', {
         email,
-        newPassword,
       });
 
       const data = response.data;
 
       // Show success message
-      setSuccessMessage(data.message);
+      setSuccessMessage(data.message || 'Password reset link sent successfully!');
 
-      // Redirect to login page
+      // Redirect to login page after a short delay
       setTimeout(() => {
         navigate('/login'); // Replace with your desired path
       }, 2000); // Redirect after 2 seconds
     } catch (error) {
       setError(
-        error.response?.data?.message || 'Failed to reset password. Please try again.'
+        error.response?.data?.message || 'Failed to send password reset request. Please try again.'
       );
     }
   };
 
   return (
     <div className="login-page">
-      <h2>Reset Password</h2>
+      <h2>Request Password Reset</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Enter your email"
+          className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
 
-        <input
-          type="password"
-          placeholder="Enter new password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit">Reset Password</button>
+        <button type="submit" className="btn btn-primary">Send Reset Link</button>
 
         {error && <p className="error-message">{error}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
@@ -81,4 +58,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default RequestPasswordReset;
