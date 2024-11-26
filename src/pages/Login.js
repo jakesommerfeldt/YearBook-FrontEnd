@@ -1,44 +1,38 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For navigation after login
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AccountManagement.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // To display error messages
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(''); // Reset error message
 
-    // Reset error message
-    setError('');
-
-    // Login logic
     try {
-      const response = await fetch('http://your-backend-api-url/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      // Make POST request to login API
+      const response = await axios.post('http://localhost:3000/api/login', {
+        username,
+        password,
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed. Please check your credentials.');
-      }
+      const data = response.data;
 
-      const data = await response.json();
+      // Store user info or token if login is successful
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Assuming the response includes a token and user info
-      // You might want to store the token in localStorage or context
-      localStorage.setItem('token', data.token); // Store token for authentication
-      localStorage.setItem('user', JSON.stringify(data.user)); // Optionally store user info
-
-      // Navigate to the dashboard or home page after successful login
-      navigate('/home'); // Change this to your desired route
+      // Redirect to the dashboard or a secure page
+      navigate('/dashboard'); // Replace with your desired path
     } catch (error) {
-      setError(error.message); // Display error message
+      setError(
+        error.response?.data?.message || 'Login failed. Please check your credentials and try again.'
+      );
     }
   };
 
@@ -47,21 +41,33 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Log In</button>
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+
+        {/* Password input with toggle visibility */}
+        <div className="password-container">
+          <input
+            type={passwordVisible ? 'text' : 'password'} // Toggle between text and password
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            className="view-password-btn"
+            onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
+          >
+            {passwordVisible ? 'Hide' : 'Show'}
+          </button>
+        </div>
+
+        <button type="submit">Login</button>
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );
