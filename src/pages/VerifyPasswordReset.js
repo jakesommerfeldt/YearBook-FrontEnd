@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './AccountManagement.css';
 
@@ -75,6 +75,8 @@ const VerifyPasswordReset = () => {
         />
 
         <button type="submit" className="btn btn-primary">Submit</button>
+
+        <Link to="/login" className="forgot-password-link">Back to Login</Link>
 
         {/* Display error or success messages */}
         {error && <p className="error-message">{error}</p>}

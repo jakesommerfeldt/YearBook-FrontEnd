@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
 import axios from 'axios';
 import './AccountManagement.css';
 
@@ -325,7 +325,11 @@ const Register = () => {
         Register
       </button>
       {error && <p className="error-message">{error}</p>}
+
+      <Link to="/login">Have an account? Login</Link>
+
     </form>
+    
   </div>
   );
 };

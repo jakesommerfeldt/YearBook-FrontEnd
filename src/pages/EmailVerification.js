@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './AccountManagement.css';
 
 const EmailVerification = () => {
@@ -67,6 +67,8 @@ const EmailVerification = () => {
         />
 
         <button type="submit" className="btn btn-primary">Verify</button>
+
+        <Link to="/login" className="forgot-password-link">Back to Login</Link>
 
         {/* Error and Success Messages */}
         {error && <p className="error-message">{error}</p>}

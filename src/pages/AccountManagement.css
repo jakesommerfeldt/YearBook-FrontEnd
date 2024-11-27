@@ -99,10 +99,32 @@
 }
 
 .password-container {
-    gap: 20px;
-    margin-bottom: 10px;
-    display:flex; /* Align input and toggle side by side */
-    align-items: center; /* Vertically align the input and span */
-    
+    display: flex; /* Align input and toggle side by side */
+    align-items: center; /* Vertically align the input and button */
+    gap: 20px; /* Space between elements */
+    width: 100%; /* Ensure it spans the full width of the parent container */
+}
+
+.password-container input {
+    flex: 1; /* Makes the input take up remaining space */
+    width: auto; /* Prevents conflicts with flex */
+}
+
+.password-container button {
+    flex-shrink: 0; /* Prevents the button from shrinking */
+    width: auto; /* Keeps button width natural */
 }
   
+/* Forgot Password link styling */
+.forgot-password-link {
+    margin-top: 15px;
+    color: #6e72c0;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.forgot-password-link:hover {
+    color: #0056b3;
+}
+

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
 import axios from 'axios';
 import './AccountManagement.css';
 
 const Login = () => {
-  const [email, setEmail] = useState(''); // Changed from username to email
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
@@ -12,23 +12,18 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); // Reset error message
+    setError('');
 
     try {
-      // Make POST request to login API
       const response = await axios.post('http://localhost:3000/api/users/login', {
         email,
         password,
       });
 
       const data = response.data;
-
-      // Store user info or token if login is successful
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-
-      // Redirect to the dashboard or a secure page
-      navigate('/dashboard'); // Replace with your desired path
+      navigate('/dashboard');
     } catch (error) {
       setError(
         error.response?.data?.message || 'Login failed. Please check your credentials and try again.'
@@ -40,7 +35,6 @@ const Login = () => {
     <div className="login-page">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        {/* Email input */}
         <input
           type="email"
           placeholder="Email"
@@ -49,10 +43,9 @@ const Login = () => {
           required
         />
 
-        {/* Password input with toggle visibility */}
         <div className="password-container">
           <input
-            type={passwordVisible ? 'text' : 'password'} // Toggle between text and password
+            type={passwordVisible ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -61,7 +54,7 @@ const Login = () => {
           <button
             type="button"
             className="view-password-btn"
-            onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
+            onClick={() => setPasswordVisible(!passwordVisible)}
           >
             {passwordVisible ? 'Hide' : 'Show'}
           </button>
@@ -70,6 +63,12 @@ const Login = () => {
         <button type="submit">Login</button>
         {error && <p className="error-message">{error}</p>}
       </form>
+      <Link to="/reset-password" className="forgot-password-link">
+        Forgot Password?
+      </Link>
+
+      <Link to="/register">Don't have an account? Register</Link>
+
     </div>
   );
 };
