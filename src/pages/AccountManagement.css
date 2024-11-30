@@ -128,3 +128,103 @@
     color: #0056b3;
 }
 
+/*          DASHBOARD           */
+/* Dashboard container layout */
+.dashboard-container {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* User table styles */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-table th {
+    background-color: #101441;
+    color: #ffffff;
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Form container */
+.form-container {
+    margin: 20px 0;
+}
+
+.form-container input {
+    width: calc(100% - 24px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cdd1d8;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-container input:focus {
+    border-color: #6e72c0;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+}
+
+/* Button styles */
+.dashboard-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #101441;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dashboard-container button:hover {
+    background-color: #0056b3;
+}
+
+.dashboard-container button:active {
+    transform: scale(0.98);
+}
+
+/* Delete button */
+.delete-button {
+    background-color: #e63946;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #c53030;
+}
+
+/* Section titles */
+.dashboard-container h3 {
+    font-size: 24px;
+    color: #101441;
+    margin-bottom: 16px;
+    font-weight: 600;
+}

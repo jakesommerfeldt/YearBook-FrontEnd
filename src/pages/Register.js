@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
 import axios from 'axios';
 import './AccountManagement.css';
+axios.defaults.baseURL = 'http://localhost:3000/api';
+
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +18,7 @@ const Register = () => {
   const [finishYear, setFinishYear] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({}); // Store individual field errors
 
   const navigate = useNavigate();
   
@@ -139,13 +142,25 @@ const Register = () => {
     { id: 52, name: "Women and Gender Studies Minor" },
   ];
   
+  const validateFields = () => {
+    const errors = {};
+    if (!email) errors.email = 'Email is required.';
+    if (!name) errors.name = 'Name is required.';
+    if (!password) errors.password = 'Password is required.';
+    if (!major1ID) errors.major1ID = 'Primary major is required.';
+    if (!finishYear) errors.finishYear = 'Finish year is required.';
+    return errors;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); // Reset error message
+    setError('');
+    setFieldErrors({}); // Reset field errors
 
-    // Validation
-    if (!major1ID) {
-      setError('You must select a primary major.');
+    // Validate fields
+    const errors = validateFields();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
@@ -161,19 +176,17 @@ const Register = () => {
       if (minor2ID) formData.append('minor2ID', minor2ID);
       if (minor3ID) formData.append('minor3ID', minor3ID);
       formData.append('quote', quote);
-      formData.append('finishYear', finishYear);
+      formData.append('year', finishYear);
       if (profileImage) formData.append('profileImage', profileImage);
 
-      const response = await axios.post('http://localhost:3000/api/users', formData, {
+      const response = await axios.post('/users', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // Store user info or token if needed
-      localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
       // Redirect or handle successful registration
-      navigate('/home');
+      navigate('/email-verification');
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed. Please try again.');
     }

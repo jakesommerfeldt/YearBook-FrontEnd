@@ -15,8 +15,7 @@ const EmailVerification = () => {
     setSuccessMessage('');
 
     try {
-      // Send POST request to the email verification API
-      const response = await fetch('http://localhost:3000/api/users/verify', {
+      const response = await fetch('http://localhost:3000/api/users/verify', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,17 +24,15 @@ const EmailVerification = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Verification failed. Please ensure the code is correct and try again.');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Verification failed. Please try again.');
       }
 
       const data = await response.json();
+      setSuccessMessage(data.message || 'Email successfully verified! Redirecting...');
 
-      // Show success message
-      setSuccessMessage('Email successfully verified! Redirecting...');
-
-      // Redirect after success
       setTimeout(() => {
-        navigate('/home'); // Change this to your desired route
+        navigate('/dashboard'); // Change this to the desired route
       }, 2000);
     } catch (error) {
       setError(error.message);
@@ -46,7 +43,6 @@ const EmailVerification = () => {
     <div className="login-page">
       <h2>Email Verification</h2>
       <form onSubmit={handleSubmit}>
-        {/* User ID Input */}
         <input
           type="text"
           placeholder="User ID"
@@ -55,8 +51,6 @@ const EmailVerification = () => {
           onChange={(e) => setUserId(e.target.value)}
           required
         />
-
-        {/* Verification Code Input */}
         <input
           type="text"
           placeholder="Verification Code"
@@ -65,12 +59,8 @@ const EmailVerification = () => {
           onChange={(e) => setCode(e.target.value)}
           required
         />
-
         <button type="submit" className="btn btn-primary">Verify</button>
-
         <Link to="/login" className="forgot-password-link">Back to Login</Link>
-
-        {/* Error and Success Messages */}
         {error && <p className="error-message">{error}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
       </form>

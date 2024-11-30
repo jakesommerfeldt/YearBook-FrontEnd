@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import RequestPasswordReset from './pages/ResetPassword';
 import VerifyPasswordReset from './pages/VerifyPasswordReset';
 import EmailVerification from './pages/EmailVerification';
+import Dashboard from './pages/Dashboard';
 // Import your home or dashboard page if applicable
 // import Dashboard from './pages/Dashboard';
 
@@ -17,7 +18,8 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<RequestPasswordReset />} />
         <Route path="/verify-reset" element={<VerifyPasswordReset />} />
-        <Route path="/email-verification" element={<EmailVerification />} />
+        <Route path="/verify" element={<EmailVerification />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>
