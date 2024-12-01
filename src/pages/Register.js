@@ -10,13 +10,11 @@ const Register = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [major1ID, setMajor1ID] = useState('');
-  const [major2ID, setMajor2ID] = useState('');
   const [minor1ID, setMinor1ID] = useState('');
-  const [minor2ID, setMinor2ID] = useState('');
-  const [minor3ID, setMinor3ID] = useState('');
   const [quote, setQuote] = useState('');
   const [finishYear, setFinishYear] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({}); // Store individual field errors
 
@@ -160,190 +158,138 @@ const Register = () => {
     // Validate fields
     const errors = validateFields();
     if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      return;
+        setFieldErrors(errors);
+        return;
     }
 
     try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('name', name);
-      formData.append('password', password);
-      formData.append('accessLevel', 1);
-      formData.append('major1ID', major1ID);
-      if (major2ID) formData.append('major2ID', major2ID);
-      if (minor1ID) formData.append('minor1ID', minor1ID);
-      if (minor2ID) formData.append('minor2ID', minor2ID);
-      if (minor3ID) formData.append('minor3ID', minor3ID);
-      formData.append('quote', quote);
-      formData.append('year', finishYear);
-      if (profileImage) formData.append('profileImage', profileImage);
+        const formData = new FormData();
+        formData.append('email', email || '');
+        formData.append('name', name || '');
+        formData.append('password', password || '');
+        formData.append('accessLevel', 1);
+        formData.append('major1ID', major1ID || '');
+        formData.append('minor1ID', minor1ID || '');
+        formData.append('quote', quote || '');
+        formData.append('year', 'Senior');
+        formData.append('profileImage', profileImage || '');
+        formData.append('year', finishYear || '');
 
-      const response = await axios.post('/users', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+        const response = await axios.post('/users', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
 
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      // Redirect or handle successful registration
-      navigate('/email-verification');
+        // Redirect or handle successful registration
+        navigate('/email-verification');
     } catch (error) {
-      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+        setError(error.response?.data?.message || 'Registration failed. Please try again.');
     }
-  };
+};
 
   return (
     <div className="login-page">
-    <h2>Register</h2>
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="text"
-          placeholder="Email"
-          className="form-control"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="text"
-          placeholder="Name"
-          className="form-control"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          placeholder="Password"
-          className="form-control"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="major1">Major 1:</label>
-        <select
-          id="major1"
-          className="form-control"
-          value={major1ID}
-          onChange={(e) => setMajor1ID(e.target.value)}
-          required
-        >
-          <option value="">Select Major</option>
-          {majors.map((major) => (
-            <option key={major.id} value={major.id}>
-              {major.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="major2">Major 2 (Optional):</label>
-        <select
-          id="major2"
-          className="form-control"
-          value={major2ID}
-          onChange={(e) => setMajor2ID(e.target.value)}
-        >
-          <option value="">Select Major</option>
-          {majors.map((major) => (
-            <option key={major.id} value={major.id}>
-              {major.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="minor1">Minor 1:</label>
-        <select
-          id="minor1"
-          className="form-control"
-          value={minor1ID}
-          onChange={(e) => setMinor1ID(e.target.value)}
-        >
-          <option value="">Select Minor</option>
-          {minors.map((minor) => (
-            <option key={minor.id} value={minor.id}>
-              {minor.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="minor2">Minor 2:</label>
-        <select
-          id="minor2"
-          className="form-control"
-          value={minor2ID}
-          onChange={(e) => setMinor2ID(e.target.value)}
-        >
-          <option value="">Select Minor</option>
-          {minors.map((minor) => (
-            <option key={minor.id} value={minor.id}>
-              {minor.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="minor3">Minor 3:</label>
-        <select
-          id="minor3"
-          className="form-control"
-          value={minor3ID}
-          onChange={(e) => setMinor3ID(e.target.value)}
-        >
-          <option value="">Select Minor</option>
-          {minors.map((minor) => (
-            <option key={minor.id} value={minor.id}>
-              {minor.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <input
-          type="number"
-          placeholder="Finish Year"
-          className="form-control"
-          value={finishYear}
-          onChange={(e) => setFinishYear(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="file"
-          className="form-control"
-          onChange={(e) => setProfileImage(e.target.files[0])}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="text"
-          placeholder="Quote"
-          className="form-control"
-          value={quote}
-          onChange={(e) => setQuote(e.target.value)}
-        />
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Register
-      </button>
-      {error && <p className="error-message">{error}</p>}
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Name"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="Password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="major1">Major 1:</label>
+          <select
+            id="major1"
+            className="form-control"
+            value={major1ID}
+            onChange={(e) => setMajor1ID(e.target.value)}
+            required
+          >
+            <option value="">Select Major</option>
+            {majors.map((major) => (
+              <option key={major.id} value={major.id}>
+                {major.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="minor1">Minor 1:</label>
+          <select
+            id="minor1"
+            className="form-control"
+            value={minor1ID}
+            onChange={(e) => setMinor1ID(e.target.value)}
+          >
+            <option value="">Select Minor</option>
+            {minors.map((minor) => (
+              <option key={minor.id} value={minor.id}>
+                {minor.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <input
+            type="number"
+            placeholder="Finish Year"
+            className="form-control"
+            value={finishYear}
+            onChange={(e) => setFinishYear(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="file"
+            className="form-control"
+            onChange={(e) => setProfileImage(e.target.files[0])}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Quote"
+            className="form-control"
+            value={quote}
+            onChange={(e) => setQuote(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Register
+        </button>
+        {error && <p className="error-message">{error}</p>}
 
-      <Link to="/login">Have an account? Login</Link>
-
-    </form>
-    
-  </div>
+        <Link to="/login">Have an account? Login</Link>
+      </form>
+    </div>
   );
 };
 

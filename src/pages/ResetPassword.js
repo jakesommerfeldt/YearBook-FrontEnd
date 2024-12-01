@@ -27,7 +27,7 @@ const RequestPasswordReset = () => {
 
       // Redirect to login page after a short delay
       setTimeout(() => {
-        navigate('/login'); // Replace with your desired path
+        navigate('/verify-reset');
       }, 2000); // Redirect after 2 seconds
     } catch (error) {
       setError(

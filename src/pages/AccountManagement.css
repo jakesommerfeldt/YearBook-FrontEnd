@@ -228,3 +228,45 @@
     margin-bottom: 16px;
     font-weight: 600;
 }
+
+/*      DASHBOARD       */
+.section-toggle-buttons {
+    margin-bottom: 20px;
+}
+
+.section-toggle-buttons button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-container h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #101441;
+}
+
+.header-container .sign-out {
+    padding: 10px 20px;
+    background-color: #101441;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header-container .sign-out:hover {
+    background-color: #0056b3;
+}
+
+.header-container .sign-out:active {
+    transform: scale(0.98);
+}
