@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './AccountManagement.css';
+import axios from 'axios';
 
 const EmailVerification = () => {
   const [userId, setUserId] = useState(''); // Field for userId
@@ -14,28 +15,28 @@ const EmailVerification = () => {
     setError('');
     setSuccessMessage('');
 
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage or relevant storage
+
     try {
-      const response = await fetch('http://localhost:3000/api/users/verify', { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, code }),
-      });
+      const response = await axios.post(
+        'http://localhost:3000/api/users/verify',
+        { userId, code }, // Request payload
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        }
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Verification failed. Please try again.');
-      }
-
-      const data = await response.json();
-      setSuccessMessage(data.message || 'Email successfully verified! Redirecting...');
+      setSuccessMessage(response.data.message || 'Email successfully verified! Redirecting...');
 
       setTimeout(() => {
-        navigate('/dashboard'); // Change this to the desired route
+        navigate('/dashboard'); // Redirect to the desired route
       }, 2000);
     } catch (error) {
-      setError(error.message);
+      const errorMessage = error.response?.data?.error || 'Verification failed. Please try again.';
+      setError(errorMessage);
     }
   };
 

@@ -4,7 +4,6 @@ import axios from 'axios';
 import './AccountManagement.css';
 axios.defaults.baseURL = 'http://localhost:3000/api';
 
-
 const Register = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -139,7 +138,7 @@ const Register = () => {
     { id: 51, name: "Video Game Studies Minor" },
     { id: 52, name: "Women and Gender Studies Minor" },
   ];
-  
+ /* 
   const validateFields = () => {
     const errors = {};
     if (!email) errors.email = 'Email is required.';
@@ -149,19 +148,19 @@ const Register = () => {
     if (!finishYear) errors.finishYear = 'Finish year is required.';
     return errors;
   };
-
+*/
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
     setFieldErrors({}); // Reset field errors
 
-    // Validate fields
+/*    // Validate fields
     const errors = validateFields();
     if (Object.keys(errors).length > 0) {
         setFieldErrors(errors);
         return;
     }
-
+*/
     try {
         const formData = new FormData();
         formData.append('email', email || '');
@@ -169,11 +168,10 @@ const Register = () => {
         formData.append('password', password || '');
         formData.append('accessLevel', 1);
         formData.append('major1ID', major1ID || '');
-        formData.append('minor1ID', minor1ID || '');
+        if (minor1ID) formData.append('minor1ID', minor1ID || '');
         formData.append('quote', quote || '');
-        formData.append('year', 'Senior');
-        formData.append('profileImage', profileImage || '');
         formData.append('year', finishYear || '');
+        formData.append('profileImage', profileImage || '');
 
         const response = await axios.post('/users', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -182,11 +180,12 @@ const Register = () => {
         localStorage.setItem('user', JSON.stringify(response.data.user));
 
         // Redirect or handle successful registration
-        navigate('/email-verification');
+        navigate('/verify');
     } catch (error) {
-        setError(error.response?.data?.message || 'Registration failed. Please try again.');
+        const backendError = error.response?.data?.error || 'Registration failed. Please try again.';
+        setError(backendError);
     }
-};
+  };
 
   return (
     <div className="login-page">
@@ -201,6 +200,7 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          {fieldErrors.email && <p className="field-error-message">{fieldErrors.email}</p>}
         </div>
         <div className="form-group">
           <input
@@ -211,6 +211,7 @@ const Register = () => {
             onChange={(e) => setName(e.target.value)}
             required
           />
+          {fieldErrors.name && <p className="field-error-message">{fieldErrors.name}</p>}
         </div>
         <div className="form-group">
           <input
