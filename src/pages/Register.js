@@ -189,45 +189,52 @@ const Register = () => {
 
   return (
     <div className="login-page">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      {/*<h2>Register</h2>*/}
+      <form className="form-container" onSubmit={handleSubmit}>
+        {/* Email Input */}
         <div className="form-group">
           <input
-            type="text"
+            type="email"
             placeholder="Email"
-            className="form-control"
+            className="form-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          {fieldErrors.email && <p className="field-error-message">{fieldErrors.email}</p>}
+          {fieldErrors.email && <p className="error-message">{fieldErrors.email}</p>}
         </div>
+
+        {/* Name Input */}
         <div className="form-group">
           <input
             type="text"
             placeholder="Name"
-            className="form-control"
+            className="form-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-          {fieldErrors.name && <p className="field-error-message">{fieldErrors.name}</p>}
+          {fieldErrors.name && <p className="error-message">{fieldErrors.name}</p>}
         </div>
+
+        {/* Password Input */}
         <div className="form-group">
           <input
             type="password"
             placeholder="Password"
-            className="form-control"
+            className="form-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
         </div>
+
+        {/* Major Dropdown */}
         <div className="form-group">
-          <label htmlFor="major1">Major 1:</label>
           <select
             id="major1"
-            className="form-control"
+            className="form-input"
             value={major1ID}
             onChange={(e) => setMajor1ID(e.target.value)}
             required
@@ -240,11 +247,12 @@ const Register = () => {
             ))}
           </select>
         </div>
+
+        {/* Minor Dropdown */}
         <div className="form-group">
-          <label htmlFor="minor1">Minor 1:</label>
           <select
             id="minor1"
-            className="form-control"
+            className="form-input"
             value={minor1ID}
             onChange={(e) => setMinor1ID(e.target.value)}
           >
@@ -256,29 +264,38 @@ const Register = () => {
             ))}
           </select>
         </div>
+
+        {/* Finish Year Input */}
         <div className="form-group">
           <input
             type="number"
             placeholder="Finish Year"
-            className="form-control"
+            className="form-input"
             value={finishYear}
             onChange={(e) => setFinishYear(e.target.value)}
             required
           />
+          {fieldErrors.finishYear && <p className="error-message">{fieldErrors.finishYear}</p>}
         </div>
+
+        {/* Profile Image Upload */}
         <div className="form-group">
+          <label htmlFor="profileImage">Upload Profile Image:</label>
           <input
             type="file"
-            className="form-control"
+            id="profileImage"
+            className="form-input"
             onChange={(e) => setProfileImage(e.target.files[0])}
             required
           />
         </div>
+
+        {/* Quote Input */}
         <div className="form-group">
           <input
             type="text"
             placeholder="Quote"
-            className="form-control"
+            className="form-input"
             value={quote}
             onChange={(e) => setQuote(e.target.value)}
           />

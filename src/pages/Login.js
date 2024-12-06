@@ -33,8 +33,8 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
+      {/*<h2>Login</h2>*/}
         <input
           type="email"
           placeholder="Email"
@@ -62,13 +62,14 @@ const Login = () => {
 
         <button type="submit">Login</button>
         {error && <p className="error-message">{error}</p>}
+
+        <Link to="/reset-password" className="forgot-password-link">
+          Forgot Password?
+        </Link>
+
+        <Link to="/register">Don't have an account? Register</Link>
+
       </form>
-      <Link to="/reset-password" className="forgot-password-link">
-        Forgot Password?
-      </Link>
-
-      <Link to="/register">Don't have an account? Register</Link>
-
     </div>
   );
 };

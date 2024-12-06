@@ -5,14 +5,17 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #101441;
+    background-color: #101441; /* Fallback color in case the image doesn't load */
+    background-image: url('C:/Users/jakes/OneDrive - Carroll University/CSC440/project/client/yearbook-frontend/src/assets/images/campus.png'); /* Corrected path with normal slashes */
+    background-size: cover; /* Ensure the image covers the entire element */
+    background-position: center; /* Center the image */
     font-family: Arial, sans-serif;
     padding: 20px;
 }
 
 .login-page h2 {
     font-size: 28px;
-    color: #ffffff;
+    color: #000000;
     margin-bottom: 24px;
     font-weight: 600;
     /*text-transform: uppercase;
@@ -54,7 +57,7 @@
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    background-color: #000000;
+    background-color: #ff7f50;
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -63,7 +66,7 @@
 }
 
 .login-page button:hover {
-    background-color: #0056b3;
+    background-color: #0b0f48;
 }
 
 .login-page button:active {
@@ -130,31 +133,41 @@
 
 /*          DASHBOARD           */
 /* Dashboard container layout */
-.dashboard-container {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
+
+.dashboard-container-with-bg {
+    background-image: url('C:/Users/jakes/OneDrive - Carroll University/CSC440/project/client/yearbook-frontend/src/assets/images/paper_bg.png');
+    background-size: cover; /* Ensure the image fully covers the background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    min-height: 100vh; /* Ensure the background spans the full viewport height */
+    width: 100%; /* Make the container as wide as the page */
+    margin: 0; /* Remove any margin to avoid gaps */
     padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0; /* Optional: Set to 0 if you want sharp corners */
+    box-shadow: none; /* Optional: Remove shadow to keep it page-wide */
+
+    /* Flexbox for Centering */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
 }
 
 /* User table styles */
 .user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+    width: 200%; /* Retain your desired table width */
+    margin: 0 auto; /* Centers the table horizontally */
+    border-collapse: collapse; /* Keep borders collapsed */
 }
 
 .user-table th, .user-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 .user-table th {
-    background-color: #101441;
+    background-color: #ff7f50;
     color: #ffffff;
 }
 
@@ -191,7 +204,7 @@
 .dashboard-container button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #101441;
+    background-color: #ff7f50;
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -200,7 +213,7 @@
 }
 
 .dashboard-container button:hover {
-    background-color: #0056b3;
+    background-color: #ff7f50;
 }
 
 .dashboard-container button:active {
@@ -250,12 +263,13 @@
 .header-container h1 {
     margin: 0;
     font-size: 28px;
-    color: #101441;
+    color: #ff7f50;
+    padding: 0px 100px;
 }
 
 .header-container .sign-out {
     padding: 10px 20px;
-    background-color: #101441;
+    background-color: #ff7f50;
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -264,7 +278,7 @@
 }
 
 .header-container .sign-out:hover {
-    background-color: #0056b3;
+    background-color: #ff7f50;
 }
 
 .header-container .sign-out:active {
@@ -308,6 +322,9 @@
 .form-group {
     display: flex;
     flex-direction: column;
+    width: 100%; /* Ensure form groups span the same width */
+    max-width: 400px; /* Match the input field's maximum width */
+    margin-bottom: 8px; /* Add spacing between form fields */
 }
 
 .form-label {
@@ -324,15 +341,18 @@
     border-radius: 4px;
     outline: none;
     transition: border-color 0.3s ease;
+    width: 100%; /* Ensure full width within the parent container */
+    max-width: 400px; /* Limit the maximum width */
+    box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .form-input:focus {
-    border-color: #007bff;
+    border-color: #ff7f50;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
 }
 
 .update-user-button {
-    background-color: #007bff;
+    background-color: #ff7f50;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -344,5 +364,38 @@
 }
 
 .update-user-button:hover {
-    background-color: #0056b3;
+    background-color: #ff7f50;
+}
+
+/*          BUTTON STYLING */
+.btn {
+    display: inline-block;
+    width: 100%; /* Adjust as needed */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff; /* White text */
+    background-color: #ff7f50; /* Coral/Orange */
+    border: none;
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #e67342; /* Slightly darker orange for hover effect */
+}
+
+.btn:active {
+    transform: scale(0.98); /* Slightly shrink the button on click */
+}
+
+.btn-primary {
+    background-color: #ff7f50; /* Ensures consistency if btn-primary is used */
+    border: 2px solid transparent;
+}
+
+.btn-primary:hover {
+    border: 2px solid #e67342; /* Adds a border on hover */
 }

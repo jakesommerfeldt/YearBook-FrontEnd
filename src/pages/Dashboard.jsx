@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Ensure you're using React Router
+import { useNavigate, Link } from 'react-router-dom'; // Ensure you're using React Router
 import './AccountManagement.css';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
@@ -292,146 +292,128 @@ const Dashboard = () => {
 };
 
     return (
-        <div className="dashboard-container">
+        <div>
             <div className="header-container">
                 <h1>Dashboard</h1>
                 <button className="sign-out" onClick={handleSignOut}>
                     Sign Out
                 </button>
             </div>
-    
-            <h3>Toggle Views</h3>
-            <div className="button-container">
+            <div className="dashboard-container-with-bg">   
                 {/* Toggle Views */}
+                <h3>Toggle Views</h3>
                 <div className="section-toggle-buttons">
                     <button onClick={toggleAllUsers}>
-                        {showAllUsers ? 'Hide All Users' : 'Show All Users'}
+                        {showAllUsers ? 'All Students' : 'All Students'}
                     </button>
                     <button onClick={toggleUpdateUser}>
-                        {showUpdateUser ? 'Hide Update User' : 'Show Update User'}
+                        {showUpdateUser ? 'Update Student Information' : 'Update Student Information'}
                     </button>
                     <button onClick={toggleDeleteSection}>
-                        {isDeleteSectionVisible ? 'Hide Delete Account Section' : 'Show Delete Account Section'}
+                        {isDeleteSectionVisible ? 'Account Deletion' : 'Account Deletion'}
                     </button>
                 </div>
-            </div>
-    
-            {showAllUsers && (
-                <div id="user-table-section">
-                    <h3>All Users</h3>
-                    <div style={{ overflowX: 'auto' }}>
-                        <table className="user-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Maj 1</th>
-                                    <th>Maj 2</th>
-                                    <th>Min 1</th>
-                                    <th>Min 2</th>
-                                    <th>Min 3</th>
-                                    <th>BeReal Username</th>
-                                    <th>Facebook Username</th>
-                                    <th>Instagram Username</th>
-                                    <th>Snapchat Username</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.map((user) => (
-                                    <tr key={user.name}>
-                                        <td>{user.name}</td>
-                                        <td>{user.email}</td>
-                                        <td>{getMajorNameById(user.major1ID)}</td>
-                                        <td>{getMajorNameById(user.major2ID)}</td>
-                                        <td>{getMinorNameById(user.minor1ID)}</td>
-                                        <td>{getMinorNameById(user.minor2ID)}</td>
-                                        <td>{getMinorNameById(user.minor3ID)}</td>
-                                        <td>{user.beRealUsername}</td>
-                                        <td>{user.facebookUsername}</td>
-                                        <td>{user.instagramUsername}</td>
-                                        <td>{user.snapchatUsername}</td>
+        
+                {showAllUsers && (
+                    <div id="user-table-section">
+                        <h3>All Students</h3>
+                        <div>
+                            <table className="user-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {users.map((user) => (
+                                        <tr key={user.id}>
+                                            <td>
+                                                {/* Add Link to student details */}
+                                                <Link to={`/student/${user.id}`}>{user.name}</Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            )}
-    
-            {showUpdateUser && (
-                <div className="update-user-section">
-                    <h2>Update User</h2>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            // Handle form submission if necessary
-                        }}
-                    >
-                        {[
-                            'name',
-                            'major1ID',
-                            'major2ID',
-                            'minor1ID',
-                            'minor2ID',
-                            'minor3ID',
-                            'quote',
-                            'year',
-                            'finishYear',
-                            'instagramUsername',
-                            'snapchatUsername',
-                            'beRealUsername',
-                            'twitterUsername',
-                            'tikTokUsername',
-                            'facebookUsername'
-                        ].map((field) => (
-                            <div key={field} className="form-group">
-                                <label htmlFor={field}>{field}</label>
-                                <input
-                                    type="text"
-                                    id={field}
-                                    name={field}
-                                    onChange={(e) => {
-                                        setUpdateData((prevData) => ({
-                                            ...prevData,
-                                            [field]: e.target.value,
-                                        }));
-                                    }}
-                                />
-                            </div>
-                        ))}
-                    </form>
-                    <button
-                        type="button"
-                        onClick={async () => {
-                            try {
-                                const token = localStorage.getItem('token'); // Retrieve token from localStorage
-                                const decodedToken = jwtDecode(token);
+                )}
+        
+                {showUpdateUser && (
+                    <div className="update-user-section">
+                        <h2>Update User</h2>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                // Handle form submission if necessary
+                            }}
+                        >
+                            {[
+                                'name',
+                                'major1ID',
+                                'major2ID',
+                                'minor1ID',
+                                'minor2ID',
+                                'minor3ID',
+                                'quote',
+                                'year',
+                                'finishYear',
+                                'instagramUsername',
+                                'snapchatUsername',
+                                'beRealUsername',
+                                'twitterUsername',
+                                'tikTokUsername',
+                                'facebookUsername'
+                            ].map((field) => (
+                                <div key={field} className="form-group">
+                                    <label htmlFor={field}>{field}</label>
+                                    <input
+                                        type="text"
+                                        id={field}
+                                        name={field}
+                                        onChange={(e) => {
+                                            setUpdateData((prevData) => ({
+                                                ...prevData,
+                                                [field]: e.target.value,
+                                            }));
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                        </form>
+                        <button
+                            type="button"
+                            onClick={async () => {
+                                try {
+                                    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+                                    const decodedToken = jwtDecode(token);
 
-                                const result = await updateUser(decodedToken.userID, updateData);
-                                console.log('Update successful:', result);
-                                // Optionally, show a success message or update UI state
-                            } catch (err) {
-                                console.error('Failed to update user:', err);
-                                // Optionally, show an error message
-                            }
-                        }}
-                    >
-                        Update User
-                    </button>
-                </div>
-            )}
+                                    const result = await updateUser(decodedToken.userID, updateData);
+                                    console.log('Update successful:', result);
+                                    // Optionally, show a success message or update UI state
+                                } catch (err) {
+                                    console.error('Failed to update user:', err);
+                                    // Optionally, show an error message
+                                }
+                            }}
+                        >
+                            Update User
+                        </button>
+                    </div>
+                )}
 
-            {isDeleteSectionVisible && (
-                <div className="delete-account-section">
-                    <h3>Delete Account</h3>
-                    <p>
-                        Warning: Deleting your account is irreversible.
-                    </p>
-                    <button className="delete-button" onClick={handleDeleteAccount}>
-                        Delete My Account
-                    </button>
-                </div>
-            )}            
+                {isDeleteSectionVisible && (
+                    <div className="delete-account-section">
+                        <h3>Delete Account</h3>
+                        <p>
+                            Warning: Deleting your account is irreversible.
+                        </p>
+                        <button className="delete-button" onClick={handleDeleteAccount}>
+                            Delete My Account
+                        </button>
+                    </div>
+                )}            
+            </div>
         </div>
     );
 };
