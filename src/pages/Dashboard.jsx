@@ -326,10 +326,9 @@ const Dashboard = () => {
                                 </thead>
                                 <tbody>
                                     {users.map((user) => (
-                                        <tr key={user.id}>
+                                        <tr key={user.userID}>
                                             <td>
-                                                {/* Add Link to student details */}
-                                                <Link to={`/student/${user.id}`}>{user.name}</Link>
+                                                <Link to={`/student/${user.userID}`}>{user.name}</Link>
                                             </td>
                                         </tr>
                                     ))}
